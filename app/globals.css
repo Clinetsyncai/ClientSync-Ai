@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 210 40% 15%; /* #1F2937 */
+    --card: 210 40% 98%; /* #F9FAFB */
+    --card-foreground: 210 40% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 15%;
+    --primary: 217 91% 60%; /* #3B82F6 calming blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 210 40% 15%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 210 40% 45%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 210 40% 15%;
+    --destructive: 0 84% 60%; /* #EF4444 soft red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 40% 90%;
+    --input: 210 40% 96%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark theme */
+    --background: 218 11% 9%; /* #0D1117 deep navy */
+    --foreground: 213 31% 91%; /* #F0F6FC soft white */
+    --card: 215 28% 17%; /* #1E293B */
+    --card-foreground: 213 31% 91%;
+    --popover: 215 28% 17%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 217 91% 60%; /* #3B82F6 calming blue */
+    --primary-foreground: 213 31% 91%;
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 213 13% 65%;
+    --accent: 215 28% 17%;
+    --accent-foreground: 213 31% 91%;
+    --destructive: 0 84% 60%; /* #EF4444 soft red */
+    --destructive-foreground: 213 31% 91%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/80;
+}
+
+/* Fade animation */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.8s ease-in;
+}
+
+/* Custom button color support */
+:root {
+  --custom-button-color: #3b82f6;
+}
+
+.custom-button-bg {
+  background-color: var(--custom-button-color);
+  border-color: var(--custom-button-color);
+}
+
+.custom-button-outline {
+  border-color: var(--custom-button-color);
+  color: var(--custom-button-color);
+}
+
+.custom-button-secondary {
+  background-color: color-mix(in srgb, var(--custom-button-color) 20%, transparent);
+  color: var(--custom-button-color);
+  border-color: color-mix(in srgb, var(--custom-button-color) 40%, transparent);
+}
