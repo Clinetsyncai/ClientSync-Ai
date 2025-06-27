@@ -19,15 +19,21 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ["Inter", "SF Pro Display", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        "sf-pro": ["SF Pro Display", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      },
       colors: {
-        // Custom theme colors
-        "deep-navy": "#0D1117",
-        charcoal: "#1A1A1A",
-        "soft-white": "#F0F6FC",
-        "calming-blue": "#3B82F6",
-        "soft-purple": "#A78BFA",
-        "soft-green": "#10B981",
-        "soft-red": "#EF4444",
+        // Custom theme colors - soft professional palette
+        "deep-navy": "#1e293b",
+        charcoal: "#334155",
+        "soft-white": "#fefefe",
+        "calming-blue": "#60a5fa",
+        "soft-blue-green": "#67e8f9",
+        "muted-coral": "#fca5a5",
+        "soft-yellow": "#fde68a",
+        "sage-green": "#86efac",
+        "warm-gray": "#f8fafc",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -77,10 +83,20 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.6s ease-out",
+        "fade-out": "fade-out 0.6s ease-out",
       },
     },
   },

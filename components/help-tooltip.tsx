@@ -13,10 +13,10 @@ export function HelpTooltip({ content, side = "top" }: HelpTooltipProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <HelpCircle className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help transition-colors" />
+          <HelpCircle className="h-4 w-4 text-muted-foreground hover:text-foreground cursor-help transition-colors duration-200" />
         </TooltipTrigger>
-        <TooltipContent side={side} className="max-w-xs">
-          <p className="text-sm">{content}</p>
+        <TooltipContent side={side} className="tooltip-content max-w-xs z-50">
+          <p className="text-sm font-medium">{content}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -62,13 +62,13 @@ export function AISuggestionsPanel() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800"
       case "medium":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800"
       case "low":
-        return "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800"
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400"
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300 border-gray-200 dark:border-gray-800"
     }
   }
 
@@ -86,38 +86,49 @@ export function AISuggestionsPanel() {
   }
 
   return (
-    <Card className="w-80">
+    <Card className="w-80 ai-suggestions-dark premium-card">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+          <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors duration-200 rounded-t-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Brain className="h-5 w-5 text-primary" />
-                <CardTitle className="text-lg">AI Suggestions</CardTitle>
+                <CardTitle className="text-lg font-semibold">AI Suggestions</CardTitle>
               </div>
-              {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              {isOpen ? (
+                <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+              ) : (
+                <ChevronRight className="h-4 w-4 transition-transform duration-200" />
+              )}
             </div>
-            <CardDescription>Recommended actions for today</CardDescription>
+            <CardDescription className="text-muted-foreground">Recommended actions for today</CardDescription>
           </CardHeader>
         </CollapsibleTrigger>
-        <CollapsibleContent>
-          <CardContent className="space-y-4">
+        <CollapsibleContent className="transition-all duration-300 ease-in-out">
+          <CardContent className="space-y-3 pt-0">
             {mockSuggestions.map((suggestion) => (
-              <div key={suggestion.id} className="border rounded-lg p-3 space-y-2">
+              <div
+                key={suggestion.id}
+                className="suggestion-item border rounded-lg p-3 space-y-3 bg-card hover:bg-muted/30 transition-all duration-200"
+              >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3 flex-1">
                     <div className="text-muted-foreground">{getTypeIcon(suggestion.type)}</div>
-                    <div className="flex-1">
-                      <h4 className="text-sm font-medium">{suggestion.title}</h4>
-                      <p className="text-xs text-muted-foreground">{suggestion.description}</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium text-foreground truncate">{suggestion.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1">{suggestion.description}</p>
                     </div>
                   </div>
-                  <Badge className={getPriorityColor(suggestion.priority)} variant="secondary">
+                  <Badge className={`${getPriorityColor(suggestion.priority)} text-xs font-medium`} variant="outline">
                     {suggestion.priority}
                   </Badge>
                 </div>
                 {suggestion.action && (
-                  <Button size="sm" variant="outline" className="w-full bg-transparent">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full bg-transparent hover:bg-primary/10 hover:text-primary hover:border-primary transition-all duration-200"
+                  >
                     {suggestion.action}
                   </Button>
                 )}

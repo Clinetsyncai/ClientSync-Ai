@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ColorPickerProvider } from "@/components/color-picker-provider"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
   title: "ClientSync AI - Professional Therapist Dashboard",
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} antialiased`}>
         <ThemeProvider defaultTheme="dark" storageKey="clientsync-ui-theme">
           <ColorPickerProvider defaultColor="#3B82F6" storageKey="clientsync-button-color">
             <SidebarProvider defaultOpen={true}>

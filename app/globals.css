@@ -4,50 +4,56 @@
 
 @layer base {
   :root {
-    /* Light theme */
-    --background: 0 0% 100%; /* #FFFFFF */
-    --foreground: 210 40% 15%; /* #1F2937 */
-    --card: 210 40% 98%; /* #F9FAFB */
-    --card-foreground: 210 40% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 15%;
-    --primary: 217 91% 60%; /* #3B82F6 calming blue */
+    /* Light theme - soft professional palette */
+    --background: 0 0% 99%; /* #fefefe soft white */
+    --foreground: 215 25% 27%; /* #334155 charcoal */
+    --card: 210 40% 98%; /* #f8fafc warm gray */
+    --card-foreground: 215 25% 27%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 215 25% 27%;
+    --primary: 213 93% 68%; /* #60a5fa calming blue */
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96%;
-    --secondary-foreground: 210 40% 15%;
+    --secondary-foreground: 215 25% 27%;
     --muted: 210 40% 96%;
-    --muted-foreground: 210 40% 45%;
+    --muted-foreground: 215 16% 47%;
     --accent: 210 40% 96%;
-    --accent-foreground: 210 40% 15%;
-    --destructive: 0 84% 60%; /* #EF4444 soft red */
+    --accent-foreground: 215 25% 27%;
+    --destructive: 0 84% 60%; /* #fca5a5 muted coral */
     --destructive-foreground: 0 0% 100%;
-    --border: 210 40% 90%;
+    --border: 220 13% 91%;
     --input: 210 40% 96%;
-    --ring: 217 91% 60%;
+    --ring: 213 93% 68%;
     --radius: 0.75rem;
+
+    /* Custom professional colors */
+    --soft-blue-green: 187 85% 70%; /* #67e8f9 */
+    --muted-coral: 0 93% 80%; /* #fca5a5 */
+    --soft-yellow: 48 96% 76%; /* #fde68a */
+    --sage-green: 142 76% 73%; /* #86efac */
   }
 
   .dark {
-    /* Dark theme */
-    --background: 218 11% 9%; /* #0D1117 deep navy */
-    --foreground: 213 31% 91%; /* #F0F6FC soft white */
-    --card: 215 28% 17%; /* #1E293B */
-    --card-foreground: 213 31% 91%;
+    /* Dark theme - maintaining professional feel */
+    --background: 215 28% 17%; /* #1e293b deep navy */
+    --foreground: 210 40% 98%;
+    --card: 215 28% 17%;
+    --card-foreground: 210 40% 98%;
     --popover: 215 28% 17%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 217 91% 60%; /* #3B82F6 calming blue */
-    --primary-foreground: 213 31% 91%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 213 93% 68%; /* #60a5fa calming blue */
+    --primary-foreground: 215 28% 17%;
     --secondary: 215 28% 17%;
-    --secondary-foreground: 213 31% 91%;
+    --secondary-foreground: 210 40% 98%;
     --muted: 215 28% 17%;
-    --muted-foreground: 213 13% 65%;
+    --muted-foreground: 215 20% 65%;
     --accent: 215 28% 17%;
-    --accent-foreground: 213 31% 91%;
-    --destructive: 0 84% 60%; /* #EF4444 soft red */
-    --destructive-foreground: 213 31% 91%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 93% 80%; /* #fca5a5 muted coral */
+    --destructive-foreground: 215 28% 17%;
     --border: 215 28% 17%;
     --input: 215 28% 17%;
-    --ring: 217 91% 60%;
+    --ring: 213 93% 68%;
   }
 }
 
@@ -55,45 +61,130 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+    font-weight: 400; /* Light/regular weight for body copy */
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-optical-sizing: auto;
+  }
+
+  /* Typography hierarchy */
+  h1 {
+    @apply text-3xl font-bold tracking-tight;
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  h2 {
+    @apply text-xl font-semibold;
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  /* Metrics should be bold */
+  .metric-value {
+    font-weight: 700;
+  }
+
+  p,
+  span,
+  div,
+  button,
+  input,
+  textarea,
+  label {
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar with theme support */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-muted;
+  @apply bg-muted/30;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded;
+  @apply bg-primary/60 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary/80;
 }
 
-/* Fade animation */
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.8s ease-out;
+/* Enhanced fade animations */
+.welcome-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.fade-in {
+.welcome-fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-fade-in {
   opacity: 1;
-  transition: opacity 0.8s ease-in;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.dashboard-fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced card styling with subtle elevation */
+.premium-card {
+  @apply bg-card border border-border/50 transition-all duration-300 ease-out;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  border-color: hsl(var(--primary) / 0.2);
+}
+
+/* Stats card specific styling */
+.stats-card {
+  @apply bg-card border border-border/30 transition-all duration-300 ease-out cursor-pointer;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.stats-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  border-color: hsl(var(--primary) / 0.3);
 }
 
 /* Custom button color support */
-:root {
-  --custom-button-color: #3b82f6;
-}
-
 .custom-button-bg {
   background-color: var(--custom-button-color);
   border-color: var(--custom-button-color);
@@ -108,4 +199,232 @@
   background-color: color-mix(in srgb, var(--custom-button-color) 20%, transparent);
   color: var(--custom-button-color);
   border-color: color-mix(in srgb, var(--custom-button-color) 40%, transparent);
+}
+
+/* Tooltip styling with theme support */
+.tooltip-content {
+  background-color: hsl(var(--tooltip-bg));
+  color: hsl(var(--tooltip-fg));
+  border: 1px solid hsl(var(--border));
+  box-shadow: var(--card-shadow-lg);
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Progress bar animations */
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress-width);
+  }
+}
+
+.animated-progress {
+  animation: progress-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .premium-card {
+    padding: var(--card-padding-sm);
+  }
+
+  .mobile-padding {
+    @apply px-3 py-2;
+  }
+
+  .mobile-text {
+    @apply text-sm;
+  }
+
+  .mobile-grid {
+    @apply grid-cols-1 gap-3;
+  }
+
+  .mobile-stats-grid {
+    @apply grid-cols-2 gap-3;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-stats-grid {
+    @apply grid-cols-1 gap-3;
+  }
+}
+
+/* HIPAA badge styling */
+.hipaa-badge {
+  @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300;
+  border: 1px solid hsl(120 100% 30%);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.dark .hipaa-badge {
+  border-color: hsl(120 100% 50%);
+}
+
+/* AI Suggestions panel styling */
+.ai-suggestions-dark {
+  @apply dark:bg-card dark:border-border;
+}
+
+.ai-suggestions-dark .suggestion-item {
+  @apply dark:bg-muted/50 dark:border-border;
+  transition: all 0.2s ease;
+}
+
+.ai-suggestions-dark .suggestion-item:hover {
+  @apply dark:bg-muted/70;
+  transform: translateY(-1px);
+}
+
+/* Activity item hover effects */
+.activity-item {
+  @apply transition-all duration-200 ease-out rounded-lg;
+}
+
+.activity-item:hover {
+  @apply bg-muted/30;
+  transform: translateX(2px);
+}
+
+/* Icon consistency */
+.icon-sm {
+  @apply h-4 w-4;
+}
+
+.icon-md {
+  @apply h-5 w-5;
+}
+
+.icon-lg {
+  @apply h-6 w-6;
+}
+
+/* Button consistency */
+.btn-primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all duration-200;
+  font-weight: 500;
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Focus states for accessibility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .premium-card {
+    border-width: 2px;
+  }
+
+  .stats-card {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .premium-card,
+  .stats-card,
+  .activity-item,
+  .suggestion-item {
+    transition: none;
+    transform: none;
+  }
+
+  .animated-progress {
+    animation: none;
+  }
+}
+
+/* Soft professional button styling */
+.soft-button {
+  @apply rounded-full px-4 py-2 text-sm font-medium transition-all duration-200;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.soft-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.1);
+}
+
+/* Muted badge styling */
+.badge-muted {
+  @apply rounded-full px-2 py-1 text-xs font-medium;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  border: 1px solid hsl(var(--border));
+}
+
+.badge-soft-yellow {
+  background-color: hsl(var(--soft-yellow));
+  color: hsl(48 84% 30%);
+  border: 1px solid hsl(48 84% 60%);
+}
+
+.badge-muted-coral {
+  background-color: hsl(var(--muted-coral));
+  color: hsl(0 84% 30%);
+  border: 1px solid hsl(0 84% 60%);
+}
+
+.badge-sage-green {
+  background-color: hsl(var(--sage-green));
+  color: hsl(142 84% 30%);
+  border: 1px solid hsl(142 84% 60%);
+}
+
+.badge-soft-blue {
+  background-color: hsl(var(--soft-blue-green));
+  color: hsl(187 84% 30%);
+  border: 1px solid hsl(187 84% 60%);
+}
+
+/* Collapsible card animations */
+.collapsible-card {
+  @apply transition-all duration-300 ease-out;
+}
+
+.collapsible-card[data-state="closed"] {
+  @apply opacity-75;
+}
+
+.collapsible-card[data-state="open"] {
+  @apply opacity-100;
+}
+
+/* Revenue opportunity toggle */
+.revenue-toggle {
+  @apply transition-all duration-200 ease-out;
+}
+
+.revenue-toggle[data-enabled="false"] {
+  @apply opacity-50 pointer-events-none;
 }
