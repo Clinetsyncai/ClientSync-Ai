@@ -1,406 +1,187 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { UserProfileDropdown } from "@/components/user-profile-dropdown"
-import { NotificationsDropdown } from "@/components/notifications-dropdown"
-import { HelpTooltip } from "@/components/help-tooltip"
-import { FloatingHelpButton } from "@/components/floating-help-button"
-import { MiniChart } from "@/components/mini-chart"
-import { AnimatedProgressBar } from "@/components/animated-progress-bar"
-import { CustomButton } from "@/components/custom-button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ExportReportsButton } from "@/components/export-reports-button"
-import { EnhancedAISuggestions } from "@/components/enhanced-ai-suggestions"
-import { ClientProfileModal } from "@/components/client-profile-modal"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { EnhancedAiSuggestions } from "@/components/enhanced-ai-suggestions"
+import { Bell, Calendar, DollarSign, FileText, MessageSquare, Plus, Users } from "lucide-react"
 
-import { MessageSquare, Calendar, Phone, Mail, Star, Clock, Filter } from "lucide-react"
-import Link from "next/link"
+// Mock data - replace with your actual data fetching
+const dashboardData = {
+  stats: [
+    { title: "Active Clients", value: "84", icon: Users, change: "+12.5%" },
+    { title: "Appointments", value: "112", icon: Calendar, change: "+5.2%" },
+    { title: "Response Rate", value: "94%", icon: MessageSquare, change: "-1.8%" },
+  ],
+  revenue: {
+    potential: 4300,
+    from: "active suggestions",
+  },
+  weeklyGoals: [
+    { title: "New Client Onboarding", progress: 80 },
+    { title: "Follow-up Messages Sent", progress: 65 },
+  ],
+  recentActivity: [
+    { type: "New Client", description: "Alex Johnson was added.", icon: Users, time: "2m ago" },
+    { type: "Appointment", description: "Meeting with Samantha Lee.", icon: Calendar, time: "1h ago" },
+    { type: "Message", description: "Follow-up sent to David Chen.", icon: MessageSquare, time: "3h ago" },
+  ],
+  quickActions: [
+    { title: "New Client", icon: Plus },
+    { title: "Send Message", icon: MessageSquare },
+    { title: "Create Invoice", icon: FileText },
+    { title: "Book Appointment", icon: Calendar },
+  ],
+}
 
-export default function Dashboard() {
-  /* ---------- STATE ---------- */
-  const [showWelcome, setShowWelcome] = useState(true)
-  const [activityFilter, setActivityFilter] = useState("all")
-  const [selectedClient, setSelectedClient] = useState<string | null>(null)
-  const [isClientModalOpen, setIsClientModalOpen] = useState(false)
-  const [weeklyGoals, setWeeklyGoals] = useState({
-    checkIns: { current: 23, target: 30 },
-    reviews: { current: 8, target: 15 },
-    leads: { current: 5, target: 10 },
-  })
+export default function DashboardPage() {
+  const [showRevenue, setShowRevenue] = useState(true)
 
-  /* ---------- EFFECTS ---------- */
-  useEffect(() => {
-    const timer = setTimeout(() => setShowWelcome(false), 2500)
-    return () => clearTimeout(timer)
-  }, [])
-
-  /* ---------- MOCK DATA ---------- */
-  const generateChartData = (trend: "up" | "down" | "neutral") =>
-    Array.from({ length: 7 }, (_, i) => ({
-      value:
-        trend === "up"
-          ? 50 + i * 6 + Math.random() * 5
-          : trend === "down"
-            ? 60 - i * 4 + Math.random() * 4
-            : 50 + (Math.random() - 0.5) * 10,
-    }))
-
-  const stats = [
-    {
-      title: "Total Clients",
-      value: "127",
-      change: "+12%",
-      icon: "👥",
-      color: "text-primary",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      positive: true,
-      chartData: generateChartData("up"),
-      trend: "up" as const,
-      tooltip: "Total number of active clients in your practice",
-      link: "/crm",
-    },
-    {
-      title: "Messages Today",
-      value: "23",
-      change: "+5%",
-      icon: "💬",
-      color: "text-green-600 dark:text-green-400",
-      bgColor: "bg-green-50 dark:bg-green-900/20",
-      positive: true,
-      chartData: generateChartData("up"),
-      trend: "up" as const,
-      tooltip: "Messages sent and received today",
-      link: "/messages",
-    },
-    {
-      title: "Appointments",
-      value: "8",
-      change: "Today",
-      icon: "📅",
-      color: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      positive: true,
-      chartData: generateChartData("neutral"),
-      trend: "neutral" as const,
-      tooltip: "Scheduled appointments for today",
-      link: "/calendar",
-    },
-    {
-      title: "Response Rate",
-      value: "94%",
-      change: "+2%",
-      icon: "📈",
-      color: "text-green-600 dark:text-green-400",
-      bgColor: "bg-green-50 dark:bg-green-900/20",
-      positive: true,
-      chartData: generateChartData("up"),
-      trend: "up" as const,
-      tooltip: "Percentage of clients who respond to your messages",
-      link: "/analytics",
-    },
-  ]
-
-  const recentActivity = [
-    {
-      type: "message",
-      client: "Sarah Johnson",
-      action: "Sent automated check-in",
-      time: "2 min ago",
-      icon: MessageSquare,
-      color: "text-primary",
-      category: "message",
-    },
-    {
-      type: "call",
-      client: "Mike Chen",
-      action: "Missed call – auto-reply sent",
-      time: "15 min ago",
-      icon: Phone,
-      color: "text-purple-600 dark:text-purple-400",
-      category: "call",
-    },
-    {
-      type: "review",
-      client: "Emma Davis",
-      action: "Left 5-star review",
-      time: "1 h ago",
-      icon: Star,
-      color: "text-green-600 dark:text-green-400",
-      category: "review",
-    },
-    {
-      type: "reminder",
-      client: "John Smith",
-      action: "Appointment reminder sent",
-      time: "2 h ago",
-      icon: Clock,
-      color: "text-primary",
-      category: "reminder",
-    },
-  ]
-
-  const filteredActivity = recentActivity.filter((a) =>
-    activityFilter === "all" ? true : a.category === activityFilter,
-  )
-
-  /* ---------- HANDLERS ---------- */
-  const openClientProfile = (clientName: string) => {
-    setSelectedClient(clientName)
-    setIsClientModalOpen(true)
-  }
-
-  /* ---------- RENDER ---------- */
   return (
-    <div className="flex-1 space-y-4 p-3 md:p-6 pt-4 md:pt-6 bg-background min-h-screen relative">
-      {/* Background watermark */}
-      <div className="fixed inset-0 opacity-[0.015] pointer-events-none select-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl md:text-9xl font-black text-primary">
-          ClientSync AI
-        </div>
-      </div>
-
-      {/* Header row */}
-      <div className="flex items-center justify-between gap-3 relative z-10">
-        <div className="flex items-center gap-3">
-          <SidebarTrigger />
+    <div className="min-h-screen bg-background text-foreground p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header */}
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <div className="relative h-10 overflow-hidden">
-              <h1 className={`text-3xl font-bold absolute welcome-fade-in ${showWelcome ? "" : "welcome-fade-out"}`}>
-                Welcome back 👋
-              </h1>
-              <h1
-                className={`text-3xl font-bold absolute dashboard-fade-in ${showWelcome ? "dashboard-fade-out" : ""}`}
-              >
-                Dashboard
-              </h1>
-            </div>
-            <p className="text-muted-foreground text-sm font-normal -mt-1">
-              Here's what's happening in your practice today.
-            </p>
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <p className="text-muted-foreground mt-1">Welcome back, here’s your practice at a glance.</p>
           </div>
-        </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" className="sleek-button bg-transparent">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Create New
+            </Button>
+          </div>
+        </header>
 
-        <div className="flex items-center gap-2">
-          <ExportReportsButton />
-          <NotificationsDropdown />
-          <ThemeToggle />
-          <UserProfileDropdown />
-        </div>
-      </div>
-
-      {/* Stats grid */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((s) => (
-          <Link key={s.title} href={s.link}>
-            <Card className="stats-card">
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {/* Stats Cards */}
+          {dashboardData.stats.map((stat) => (
+            <Card key={stat.title} className="premium-card">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{s.title}</CardTitle>
-                  <HelpTooltip content={s.tooltip} />
-                </div>
-                <div className={`h-8 w-8 rounded-lg ${s.bgColor} flex items-center justify-center text-lg`}>
-                  {s.icon}
-                </div>
+                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                <stat.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-2xl font-bold metric-value">{s.value}</div>
-                    <p className="text-xs text-muted-foreground font-normal">
-                      <span
-                        className={s.positive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}
-                      >
-                        {s.change}
-                      </span>{" "}
-                      from last month
-                    </p>
-                  </div>
-                  <div className="hidden sm:block">
-                    <MiniChart data={s.chartData} trend={s.trend} />
-                  </div>
-                </div>
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <p className="text-xs text-muted-foreground">{stat.change} from last month</p>
               </CardContent>
             </Card>
-          </Link>
-        ))}
-      </div>
+          ))}
 
-      {/* Main grid */}
-      <div className="grid gap-4 lg:grid-cols-12 relative z-10">
-        {/* Left column */}
-        <div className="lg:col-span-8 space-y-4">
-          {/* Recent Activity */}
-          <Card className="premium-card">
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    Recent Activity
-                    <HelpTooltip content="Latest interactions and automated actions" />
-                  </CardTitle>
-                  <CardDescription>Latest interactions and automated actions</CardDescription>
-                </div>
-                <Select value={activityFilter} onValueChange={setActivityFilter}>
-                  <SelectTrigger className="w-40">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Activity</SelectItem>
-                    <SelectItem value="message">Messages</SelectItem>
-                    <SelectItem value="call">Calls</SelectItem>
-                    <SelectItem value="review">Reviews</SelectItem>
-                    <SelectItem value="reminder">Reminders</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {filteredActivity.map((a, i) => (
-                  <div key={i} className="activity-item flex items-center space-x-3 p-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted/50">
-                      <a.icon className={`h-4 w-4 ${a.color}`} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <button
-                        onClick={() => openClientProfile(a.client)}
-                        className="text-sm font-medium text-left focus-ring hover:underline"
-                      >
-                        {a.client}
-                      </button>
-                      <p className="text-sm text-muted-foreground truncate font-normal">{a.action}</p>
-                    </div>
-                    <div className="text-xs text-muted-foreground whitespace-nowrap">{a.time}</div>
+          {/* Revenue Opportunity Card */}
+          <div
+            className={`md:col-span-2 transition-all duration-500 ease-in-out ${showRevenue ? "opacity-100" : "opacity-0 h-0 overflow-hidden p-0 border-0"}`}
+          >
+            {showRevenue && (
+              <Card className="premium-card bg-gradient-to-br from-green-50 to-cyan-50 dark:from-green-900/30 dark:to-cyan-900/30">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      Revenue Opportunity
+                    </CardTitle>
+                    <Switch id="revenue-toggle" checked={showRevenue} onCheckedChange={setShowRevenue} />
                   </div>
-                ))}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold text-green-600 dark:text-green-400">
+                    ${dashboardData.revenue.potential.toLocaleString()}
+                  </p>
+                  <p className="text-muted-foreground">Potential from {dashboardData.revenue.from}</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+          {!showRevenue && (
+            <div className="md:col-span-2 flex items-center justify-center">
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="revenue-toggle">Show Revenue</Label>
+                <Switch id="revenue-toggle" checked={showRevenue} onCheckedChange={setShowRevenue} />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )}
 
-          {/* Quick Actions */}
-          <Card className="premium-card">
+          {/* Weekly Goals Card */}
+          <Card className="premium-card md:col-span-2">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                Quick Actions
-                <HelpTooltip content="Common tasks and shortcuts" />
-              </CardTitle>
-              <CardDescription>Common tasks and shortcuts</CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Link href="/messages">
-                <CustomButton variant="outline" className="justify-start w-full soft-button">
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Send Bulk Message
-                </CustomButton>
-              </Link>
-              <Link href="/campaigns">
-                <CustomButton variant="outline" className="justify-start w-full soft-button">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Create Campaign
-                </CustomButton>
-              </Link>
-              <Link href="/reviews">
-                <CustomButton variant="outline" className="justify-start w-full soft-button">
-                  <Star className="mr-2 h-4 w-4" />
-                  Request Reviews
-                </CustomButton>
-              </Link>
-              <Link href="/reminders">
-                <CustomButton variant="outline" className="justify-start w-full soft-button">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Schedule Reminders
-                </CustomButton>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right column */}
-        <div className="lg:col-span-4 space-y-4">
-          <EnhancedAISuggestions />
-
-          {/* AI Assistant Status */}
-          <Card className="premium-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🤖 AI Assistant Status
-                <HelpTooltip content="Current status of AI automation" />
-              </CardTitle>
-              <CardDescription>Current automation settings</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {[
-                { label: "Auto-replies", active: true },
-                { label: "Missed-call responses", active: true },
-                { label: "Review requests", active: true },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground font-normal">{item.label}</span>
-                  <Badge className={item.active ? "badge-sage-green" : "badge-soft-yellow"}>
-                    {item.active ? "Active" : "Paused"}
-                  </Badge>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Weekly Goals */}
-          <Card className="premium-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎯 This Week&#39;s Goals
-                <HelpTooltip content="Track your weekly objectives" />
-              </CardTitle>
-              <CardDescription>Track your practice objectives</CardDescription>
+              <CardTitle>Weekly Goals</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {Object.entries(weeklyGoals).map(([key, goal]) => (
-                <div key={key}>
-                  <div className="flex items-center justify-between text-sm mb-1 capitalize">
-                    <span className="text-muted-foreground font-normal">{key.replace(/([A-Z])/g, " $1")}</span>
-                    <span className="font-semibold metric-value">
-                      {goal.current}/{goal.target}
-                    </span>
+              {dashboardData.weeklyGoals.map((goal) => (
+                <div key={goal.title}>
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="text-sm font-medium">{goal.title}</p>
+                    <p className="text-sm text-muted-foreground">{goal.progress}%</p>
                   </div>
-                  <AnimatedProgressBar
-                    value={goal.current}
-                    max={goal.target}
-                    color="#60a5fa"
-                    className="animated-progress"
-                  />
+                  <Progress value={goal.progress} className="h-2 minimal-progress-bar" />
                 </div>
               ))}
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Suggestions & Activity Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <EnhancedAiSuggestions showRevenue={showRevenue} />
+          </div>
+
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <Card className="premium-card">
+              <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4">
+                {dashboardData.quickActions.map((action) => (
+                  <Button
+                    key={action.title}
+                    variant="outline"
+                    className="sleek-button justify-start gap-2 bg-transparent"
+                  >
+                    <action.icon className="h-4 w-4" />
+                    {action.title}
+                  </Button>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity */}
+            <Card className="premium-card">
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {dashboardData.recentActivity.length > 0 ? (
+                  <div className="space-y-4">
+                    {dashboardData.recentActivity.map((activity, index) => (
+                      <div key={index} className="activity-item">
+                        <div className="activity-icon">
+                          <activity.icon className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{activity.description}</p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No recent activity.</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
-
-      {/* Mobile AI suggestions panel */}
-      <div className="lg:hidden">
-        <EnhancedAISuggestions />
-      </div>
-
-      {/* HIPAA badge */}
-      <div className="fixed bottom-4 left-4 z-40">
-        <Badge className="hipaa-badge soft-button">🔒 HIPAA-Ready | End-to-End Encrypted</Badge>
-      </div>
-
-      {/* Floating help */}
-      <FloatingHelpButton />
-
-      {/* Client profile modal */}
-      {selectedClient && (
-        <ClientProfileModal
-          isOpen={isClientModalOpen}
-          onClose={() => setIsClientModalOpen(false)}
-          clientName={selectedClient}
-        />
-      )}
     </div>
   )
 }
